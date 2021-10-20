@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: [],
+  value: [''],
   status: 'idle',
 }
 
@@ -12,10 +12,17 @@ export const currenciesToSlice = createSlice({
     set: (state, action) => {
       state.value = action.payload
     },
+    setByIndex: (state, action) => {
+      const { index, value } = action.payload
+      state.value[index] = value
+    },
+    push: (state, action) => {
+      state.value.push(action.payload)
+    },
   },
 })
 
-export const { set } = currenciesToSlice.actions
+export const { set, setByIndex, push } = currenciesToSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

@@ -1,13 +1,13 @@
 import React from 'react'
-
 import NumberFormat from 'react-number-format'
-import { TextField } from '@material-ui/core'
+import { useSelector } from 'react-redux'
+import { InputAdornment, TextField } from '@material-ui/core'
+
 import { MAX_CURRENCY_VALUE } from '../../constants/currency'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectValueFrom, set } from './valueFromSlice'
+import { selectCurrencyList } from './currencyListSlice'
 
 const NumberFormatCustom = (props) => {
-  const { inputRef, onChange, ...other } = props
+  const { inputRef, onChange, currency, prefix, ...other } = props
   const withValueLimit = (inputObj) => {
     const { value } = inputObj
     if (value <= MAX_CURRENCY_VALUE) return inputObj
@@ -29,19 +29,23 @@ const NumberFormatCustom = (props) => {
       isAllowed={withValueLimit}
       thousandSeparator
       isNumericString
-      // TODO:
-      // prefix="$"
     />
   )
 }
 
-const CurrencyValueInput = () => {
-  const dispatch = useDispatch()
+const CurrencyValueInput = ({ handleChange, value, disabled, currencyId }) => {
+  const currencyList = useSelector(selectCurrencyList)
 
-  const valueFrom = useSelector(selectValueFrom)
-
-  const handleChange = (e) => {
-    dispatch(set(e.target.value))
+  const getCurrencyAdornment = () => {
+    const currency = currencyList[currencyId]
+    if (currency) {
+      if (currency.currencySymbol) {
+        return currency.currencySymbol
+      } else if (currency.id) {
+        return currency.id
+      }
+    }
+    return ''
   }
 
   return (
@@ -51,10 +55,12 @@ const CurrencyValueInput = () => {
       name="value"
       InputProps={{
         inputComponent: NumberFormatCustom,
+        startAdornment: <InputAdornment position="start">{getCurrencyAdornment()}</InputAdornment>,
       }}
       variant="outlined"
-      value={valueFrom}
+      value={value}
       fullWidth
+      disabled={disabled}
     />
   )
 }

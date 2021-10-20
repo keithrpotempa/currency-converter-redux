@@ -1,4 +1,4 @@
-import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material'
+import { FormControl, MenuItem, Select } from '@mui/material'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -11,52 +11,22 @@ const MenuProps = {
   },
 }
 
-const InputProps = { 'aria-label': 'Without label' }
-
-export const CurrencyMultiSelector = ({ handleChange, selectedCurrencies, currencyList }) => {
-  return (
-    <FormControl sx={{ m: 1, width: 300 }}>
-      <Select
-        labelId="currency-multiselect-label"
-        id="currency-multiselect"
-        multiple
-        displayEmpty
-        inputProps={InputProps}
-        value={selectedCurrencies}
-        onChange={handleChange}
-        renderValue={(selected) => (
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-            {selected.map((value) => (
-              <Chip key={value} label={value} />
-            ))}
-          </Box>
-        )}
-        MenuProps={MenuProps}
-      >
-        {currencyList.length > 0
-          ? currencyList.map(({ currencyName, /* currencySymbol,*/ id }) => (
-              <MenuItem key={id} value={id}>
-                {currencyName}
-              </MenuItem>
-            ))
-          : ''}
-      </Select>
-    </FormControl>
-  )
-}
-
-export const CurrencySelector = ({ handleChange, selectedCurrency, currencyList }) => {
+export const CurrencySelector = ({ index, handleChange, selectedCurrency, currencyList }) => {
   return (
     <FormControl sx={{ m: 1, width: 300 }}>
       <Select
         labelId="currency-select-label"
-        id="currency-select"
+        id={`currency-select-${index}`}
+        name={`currency-select-${index}`}
         displayEmpty
-        inputProps={InputProps}
+        inputProps={{ 'aria-label': 'Without label' }}
         value={selectedCurrency}
         onChange={handleChange}
         MenuProps={MenuProps}
       >
+        <MenuItem key={'none'} value="">
+          Choose currency
+        </MenuItem>
         {currencyList.length > 0
           ? currencyList.map(({ currencyName, /* currencySymbol,*/ id }) => (
               <MenuItem key={id} value={id}>
