@@ -19,10 +19,13 @@ export const currenciesToSlice = createSlice({
     push: (state, action) => {
       state.value.push(action.payload)
     },
+    pop: (state) => {
+      state.value.pop()
+    },
   },
 })
 
-export const { set, setByIndex, push } = currenciesToSlice.actions
+export const { set, setByIndex, push, pop } = currenciesToSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

@@ -1,19 +1,19 @@
 import React from 'react'
 import { Button } from '@mui/material'
-import { push } from './currenciesToSlice'
+import { pop, push } from './currenciesToSlice'
 import { useDispatch } from 'react-redux'
 
-const AddCurrencyToButton = () => {
+const AddRemoveRowButton = ({ add }) => {
   const dispatch = useDispatch()
   const handleClick = () => {
-    dispatch(push(''))
+    dispatch(add ? push('') : pop())
   }
 
   return (
     <Button onClick={handleClick} aria-label="add" variant="outlined" size="large">
-      +
+      {add ? '+' : '-'}
     </Button>
   )
 }
 
-export default AddCurrencyToButton
+export default AddRemoveRowButton

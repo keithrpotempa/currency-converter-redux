@@ -13,7 +13,7 @@ const MenuProps = {
 
 export const CurrencySelector = ({ index, handleChange, selectedCurrency, currencyList }) => {
   return (
-    <FormControl sx={{ m: 1, width: 300 }}>
+    <FormControl sx={{ minWidth: 300, width: '100%' }}>
       <Select
         labelId="currency-select-label"
         id={`currency-select-${index}`}
@@ -23,6 +23,7 @@ export const CurrencySelector = ({ index, handleChange, selectedCurrency, curren
         value={selectedCurrency}
         onChange={handleChange}
         MenuProps={MenuProps}
+        variant="outlined"
       >
         <MenuItem key={'none'} value="">
           Choose currency

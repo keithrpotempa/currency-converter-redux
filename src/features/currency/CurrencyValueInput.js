@@ -2,9 +2,19 @@ import React from 'react'
 import NumberFormat from 'react-number-format'
 import { useSelector } from 'react-redux'
 import { InputAdornment, TextField } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 
 import { MAX_CURRENCY_VALUE } from '../../constants/currency'
 import { selectCurrencyList } from './currencyListSlice'
+
+const useStyles = makeStyles((theme) => ({
+  // A hack styling to fix an issue with TextField being slightly smaller
+  // than the Select dropdown
+  root: {
+    flexDirection: 'row !important',
+    height: '100%',
+  },
+}))
 
 const NumberFormatCustom = (props) => {
   const { inputRef, onChange, currency, prefix, ...other } = props
@@ -17,6 +27,8 @@ const NumberFormatCustom = (props) => {
     <NumberFormat
       {...other}
       getInputRef={inputRef}
+      decimalScale={2}
+      fixedDecimalScale
       onValueChange={(values) => {
         onChange({
           target: {
@@ -34,6 +46,7 @@ const NumberFormatCustom = (props) => {
 }
 
 const CurrencyValueInput = ({ handleChange, value, disabled, currencyId }) => {
+  const classes = useStyles()
   const currencyList = useSelector(selectCurrencyList)
 
   const getCurrencyAdornment = () => {
@@ -53,6 +66,7 @@ const CurrencyValueInput = ({ handleChange, value, disabled, currencyId }) => {
       label="Value"
       onChange={handleChange}
       name="value"
+      className={classes.root}
       InputProps={{
         inputComponent: NumberFormatCustom,
         startAdornment: <InputAdornment position="start">{getCurrencyAdornment()}</InputAdornment>,

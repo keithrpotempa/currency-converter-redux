@@ -13,7 +13,7 @@ import { arrayifyObject } from '../../helper/api'
 import { CurrencySelector } from './CurrencySelector'
 import CurrencyValueInput from './CurrencyValueInput'
 import ConversionRateInput from './ConversionRateInput'
-import AddCurrencyToButton from './AddCurrencyToButton'
+import AddRemoveRowButton from './AddRemoveRowButton'
 
 export function Currency() {
   const dispatch = useDispatch()
@@ -61,13 +61,13 @@ export function Currency() {
   }, [currencyFrom, currenciesTo, dispatch, conversionRates, haveFromAndToCurrencies])
 
   return (
-    <main>
-      <Grid container maxWidth="sm" spacing={2}>
+    <>
+      <Grid container sx={{ display: 'flex' }} maxWidth="sm" spacing={2} justifyContent="center">
         <Grid item xs={12}>
           <Typography variant="h2">Currency Converter</Typography>
         </Grid>
         {/* CURRENCY FROM ROW */}
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <CurrencyValueInput
             handleChange={handleValueFromChange}
             disabled={false}
@@ -75,9 +75,10 @@ export function Currency() {
             currencyId={currencyFrom}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           {/* Single selection to compare with */}
           <CurrencySelector
+            index="-1"
             handleChange={handleCurrencyFromChange}
             selectedCurrency={currencyFrom}
             currencyList={currencyList}
@@ -87,10 +88,10 @@ export function Currency() {
         {/* CURRENCY TO ROW(S) */}
         {currenciesTo.map((ct, i) => (
           <React.Fragment key={i}>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <ConversionRateInput currencyToId={currenciesTo[i]} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <CurrencySelector
                 index={i}
                 handleChange={handleCurrenciesToChange}
@@ -100,10 +101,15 @@ export function Currency() {
             </Grid>
           </React.Fragment>
         ))}
-        <Grid item xs={12}>
-          <AddCurrencyToButton />
+        <Grid item>
+          <AddRemoveRowButton add={true} />
+        </Grid>
+        <Grid item>
+          <AddRemoveRowButton add={false} />
         </Grid>
       </Grid>
-    </main>
+      {/* <Grid container sx={{ mt: 2 }} spacing={2} justifyContent="center"> */}
+      {/* </Grid> */}
+    </>
   )
 }
