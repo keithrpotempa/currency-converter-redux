@@ -1,4 +1,4 @@
-import { ALL_CURRENCIES_URL } from '../../constants/api'
+import { ALL_CURRENCIES_URL, CONVERSION_RATES_BASE_URL } from '../../constants/api'
 
 let headers = new Headers()
 headers.append('Content-Type', 'application/json')
@@ -11,6 +11,11 @@ const requestOptions = {
 
 export const fetchCurrencyList = () => {
   return getFetch(ALL_CURRENCIES_URL).then((response) => response.results)
+}
+
+export const fetchConversionRate = (conversionId) => {
+  const url = `${CONVERSION_RATES_BASE_URL}&q=${conversionId}`
+  return getFetch(url).then((response) => response.results)
 }
 
 export const getFetch = (url) => {
