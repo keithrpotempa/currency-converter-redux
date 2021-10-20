@@ -9,8 +9,7 @@ const requestOptions = {
   redirect: 'follow',
 }
 
-export const fetchAllCurrencies = () => {
-  console.log('fetching currencies')
+export const fetchCurrencyList = () => {
   return getFetch(ALL_CURRENCIES_URL).then((response) => response.results)
 }
 

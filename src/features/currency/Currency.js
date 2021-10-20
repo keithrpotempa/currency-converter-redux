@@ -1,33 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCurrenciesAsync, selectCurrencies } from './currencySlice'
+import { getCurrencyListAsync, selectCurrencies } from './currencyListSlice'
+import { set as setCurrencyFrom, selectCurrencyFrom } from './currencyFromSlice'
+import { set as setCurrenciesTo, selectCurrenciesTo } from './currenciesToSlice'
 import { arrayifyObject } from '../../helper/api'
-import CurrencySelector from './CurrencySelector'
+import { CurrencyMultiSelector, CurrencySelector } from './CurrencySelector'
+import CurrencyValueInput from './CurrencyValueInput'
 
 export function Currency() {
-  const [selectedCurrencies, setSelectedCurrencies] = useState([])
-
-  const currencies = arrayifyObject(useSelector(selectCurrencies))
   const dispatch = useDispatch()
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event
-    setSelectedCurrencies(
-      // On autofill we get the stringified value.
-      typeof value === 'string' ? value.split(',') : value
+  const currencyList = arrayifyObject(useSelector(selectCurrencies))
+  const currencyFrom = useSelector(selectCurrencyFrom)
+  const currenciesTo = useSelector(selectCurrenciesTo)
+
+  const handleCurrencyFromChange = ({ target: { value } }) => {
+    dispatch(setCurrencyFrom(value))
+  }
+
+  const handleCurrenciesToChange = ({ target: { value } }) => {
+    dispatch(
+      setCurrenciesTo(
+        // On autofill we get the stringified value.
+        typeof value === 'string' ? value.split(',') : value
+      )
     )
   }
 
   useEffect(() => {
-    dispatch(getCurrenciesAsync())
+    dispatch(getCurrencyListAsync())
   }, [dispatch])
 
   return (
     <main>
       <h1>CURRENCIES</h1>
-      <CurrencySelector handleChange={handleChange} selectedCurrencies={selectedCurrencies} currencies={currencies} />
+      {/* Single selection to compare with */}
+      <CurrencySelector
+        handleChange={handleCurrencyFromChange}
+        selectedCurrency={currencyFrom}
+        currencyList={currencyList}
+      />
+      <CurrencyValueInput />
+      {/* Multiselector to compare to */}
+      <CurrencyMultiSelector
+        handleChange={handleCurrenciesToChange}
+        selectedCurrencies={currenciesTo}
+        currencyList={currencyList}
+      />
     </main>
   )
 }

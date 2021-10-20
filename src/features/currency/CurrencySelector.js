@@ -11,15 +11,17 @@ const MenuProps = {
   },
 }
 
-const CurrencySelector = ({ handleChange, selectedCurrencies, currencies }) => {
+const InputProps = { 'aria-label': 'Without label' }
+
+export const CurrencyMultiSelector = ({ handleChange, selectedCurrencies, currencyList }) => {
   return (
-    <FormControl sx={{ m: 1, minWidth: 300 }}>
+    <FormControl sx={{ m: 1, width: 300 }}>
       <Select
         labelId="currency-multiselect-label"
         id="currency-multiselect"
         multiple
         displayEmpty
-        inputProps={{ 'aria-label': 'Without label' }}
+        inputProps={InputProps}
         value={selectedCurrencies}
         onChange={handleChange}
         renderValue={(selected) => (
@@ -31,8 +33,8 @@ const CurrencySelector = ({ handleChange, selectedCurrencies, currencies }) => {
         )}
         MenuProps={MenuProps}
       >
-        {currencies.length > 0
-          ? currencies.map(({ currencyName, /* currencySymbol,*/ id }) => (
+        {currencyList.length > 0
+          ? currencyList.map(({ currencyName, /* currencySymbol,*/ id }) => (
               <MenuItem key={id} value={id}>
                 {currencyName}
               </MenuItem>
@@ -43,4 +45,26 @@ const CurrencySelector = ({ handleChange, selectedCurrencies, currencies }) => {
   )
 }
 
-export default CurrencySelector
+export const CurrencySelector = ({ handleChange, selectedCurrency, currencyList }) => {
+  return (
+    <FormControl sx={{ m: 1, width: 300 }}>
+      <Select
+        labelId="currency-select-label"
+        id="currency-select"
+        displayEmpty
+        inputProps={InputProps}
+        value={selectedCurrency}
+        onChange={handleChange}
+        MenuProps={MenuProps}
+      >
+        {currencyList.length > 0
+          ? currencyList.map(({ currencyName, /* currencySymbol,*/ id }) => (
+              <MenuItem key={id} value={id}>
+                {currencyName}
+              </MenuItem>
+            ))
+          : ''}
+      </Select>
+    </FormControl>
+  )
+}
